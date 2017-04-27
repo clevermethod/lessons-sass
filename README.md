@@ -15,6 +15,7 @@ http://sass-lang.com/install
 MACs already have ruby installed! so you just need to:
 
 `$ sudo gem install sass`
+you'll want to use sudo to have access to install the framework globally. your computer password will be required.
 
 check it is installed correctly
 
@@ -27,7 +28,7 @@ CSS to SCSS!:
 
 `$ sass-convert style.css style.scss`
 
-This is a crude conversion and will only try to nest your rules as it scans the document from top to bottom. It **will not** attempt to move rules around from the original to combine them or make variables. Some clean-up may be required with this option.
+This is a crude conversion and will only try to nest your rules as it scans the document from top to bottom. It **WILL NOT** attempt to move rules around from the original to combine them or make variables. Some clean-up may be desired with this option, but is not required.
 
 SASS to SCSS: (use SCSS over SASS)
 
