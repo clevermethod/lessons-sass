@@ -62,3 +62,10 @@ will attempt to put each rule on a new single line
 `$ sass --watch style/scss:style/css --style compressed`
 will attempt to put the entire style sheet onto a single line (most minified)
 
+## Other resources
+
+http://gulpjs.com/
+is a task management framework for automating repetitive workflow operations. 
+
+http://brackets.io/
+is a lightweight / highly extensible text editor with large community support
