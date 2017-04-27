@@ -16,6 +16,11 @@ MACs already have ruby installed! so you just need to:
 
 `$ sudo gem install sass`
 
+check it is installed correctly
+
+`$ sass -v`
+will return the sass version if installed correctly
+
 ## Converting / Watching
 
 CSS to SCSS!:
