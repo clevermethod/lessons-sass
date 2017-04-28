@@ -68,7 +68,8 @@ will attempt to put the entire style sheet onto a single line (most minified)
 In terminal navigate to the parent folder of the folder you want to start watching
 >`$ cd /path_from_computer_root/to_style_folder_parent/`
 
-
+File watch:
+>`$ sass --watch style/scss:style/css`
 
 Folder watch:
 >`$ sass --watch style/scss:style/css`
@@ -86,3 +87,6 @@ Brackets plugins:
 
 >**Beautify** by Drew Hamlett
 
+
+
+###### made with ♥ by [clevermethod](http://www.clevermethod.com/)

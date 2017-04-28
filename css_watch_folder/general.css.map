@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AAEA,CAAC;EACG,OAAO,EAAE,CAAC;EACV,MAAM,EAAE,CAAC;EACT,OAAO,EAAE,CAAC;EACV,UAAU,EAAE,UAAU;;AAE1B,IAAI;EACA,KAAK,ECKC,IAAI;;ADHd,CAAC;EACG,eAAe,EAAE,IAAI;EACrB,KAAK,ECEC,KAAK",
+"sources": ["../scss_watch_folder/general.scss","../scss_shared/variables.scss"],
+"names": [],
+"file": "general.css"
+}

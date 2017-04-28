@@ -1,0 +1,16 @@
+header {
+    padding: 1em;
+    border-bottom: 1px solid;
+    .links {
+        float: right;
+        a {
+            display: inline-block;
+            margin-left: 1em;
+            padding-bottom: 1em;
+            @include transition(350ms);
+            &:hover {
+                @include css3(transform, translateY(-2px));
+            }
+        }
+    }
+}

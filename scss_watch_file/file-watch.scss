@@ -1,0 +1,62 @@
+@import "../scss_shared/variables.scss";
+@import "../scss_shared/functions.scss";
+@import "../scss_shared/mixins.scss";
+@import "../scss_shared/columns.scss";
+@import "../scss_shared/reset.scss";
+// General
+* {
+    padding: 0;
+    margin: 0;
+    outline: 0;
+    box-sizing: border-box;
+}
+
+body {
+    color: $grey;
+}
+
+a {
+    text-decoration: none;
+    color: $black;
+}
+
+// Header
+header {
+    padding: 1em;
+    border-bottom: 1px solid;
+    .links {
+        float: right;
+        a {
+            display: inline-block;
+            margin-left: 1em;
+            padding-bottom: 1em;
+            @include transition(350ms);
+            &:hover {
+                @include css3(transform, translateY(-2px));
+            }
+        }
+    }
+}
+
+// Footer
+footer {
+    padding: 1em;
+    font-size: 0.5em;
+    text-align: right;
+}
+
+// Home
+section {
+    font-style: italic;
+    padding: 1em;
+    h2 {
+        margin: 0.5em 0;
+    }
+    p {
+        margin: 1em 0;
+    }
+    ul {
+        list-style: disc;
+        margin-left: 1em;
+    }
+}
