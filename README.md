@@ -15,29 +15,29 @@ http://sass-lang.com/install
 MACs already have ruby installed! so you just need to:
 >`$ sudo gem install sass`
 
-you'll want to use sudo to have access to install the framework globally. your computer password will be required.
+* you'll want to use sudo to have access to install the framework globally. your computer password will be required.
 
 check it is installed correctly
 >`$ sass -v`
 
-will return the sass version if installed correctly
+* will return the sass version if installed correctly
 
 ## Converting / Watching
 
-CSS to SCSS:
+#### CSS to SCSS:
 >`$ sass-convert style.css style.scss`
 
-This is a crude conversion and will only try to nest your rules as it scans the document from top to bottom. It **WILL NOT** attempt to move rules around from the original to combine them or make variables. Some clean-up may be desired with this option, but is not required.
+This is a crude conversion and will only try to nest your rules as it scans the document from top to bottom. It **WILL NOT** attempt to move rules around from the original source to combine them or make variables. Some clean-up may be desired with this option, but is not required.
 
-SASS to SCSS: (use SCSS over SASS)
+#### SASS to SCSS: (use SCSS over SASS)
 >`$ sass-convert style.sass style.scss`
 
-SCSS to CSS
+#### SCSS to CSS
 
-simple one time use:
+**simple one time use:**
 >`$ sass input.scss output.css`
 
-watch (recompiles whenever the watch file / folder are updated):
+**watch (recompiles whenever the watch file / folder are updated):**
 
 file:
 >`$ sass --watch input.scss:output.css`
@@ -66,7 +66,7 @@ will attempt to put the entire style sheet onto a single line (most minified)
 ## Lesson examples
 
 In terminal navigate to the parent folder of the folder you want to start watching
->`$ cd /path_from_computer_root/to_style_folder_parent/`
+>`$ cd /root/.../lessons-sass/`
 
 Folder watch: (sample html **watch_folder.html**)
 >`$ sass --watch scss_watch_folder:css_watch_folder`
@@ -86,7 +86,7 @@ Compile watch: (sample html **watch_comp.html**)
 ## How-to's
 
 ### Rules
-are the same as css with the key difference of nesting
+are the same as in css with the key difference of nesting
 
 **scss (single):**
 ~~~~
@@ -179,16 +179,19 @@ span .link{
 ~~~~
 
 #### Rules about Rules
-The main pitfall with starting out with sass is creating nesting hell; where, seemingly logical nesting in your scss file creates unmanageably long and non-overridable rules.
-But, there is an easy solution and 2 general rules-of-thumb to follow (granted there are some cases the break this mold).
-Do not add more selectors (id, class, tag) in your rules than necessary &
-The more repeated an html element on the page, the lower down a nest it will go.
+#### Nesting
+The main pitfall with starting out using sass is creating nesting hell; where, seemingly logical nesting in your scss file creates unmanageably long and non-overridable rules in your output file.
+
+But, there is an easy solution using these 2 general rules-of-thumb (granted there are some cases that break this mold).
+1. Do not add more selectors (id, class, tag) in your rules than necessary
+2. The less repeated an html element on the page, the higher in a nest it will go.
 
 **do:**
 ~~~~
+// scss
 body{ // only <html> is higher than <body>
 }
-section{ // may be more than one, but is high level enough
+section{ // may be more than one, but is high level
     span{
     }
 }
@@ -196,10 +199,17 @@ section{ // may be more than one, but is high level enough
     span{
     }
 }
+//css
+body{}
+section{}
+section span{}
+#Header{}
+#Header span{}
 ~~~~
 
 **do not:**
 ~~~~
+//scss
 body{
     section{
         span{
@@ -210,9 +220,17 @@ body{
         }
     }
 }
+//css
+body{}
+body section
+body section span{}
+body section #Header{}
+body section #Header span{}
 ~~~~
+* note: Empty rules do not get created on convertion. The above are just examples of how the nest would occur on render.
 
-The next rule is about the placement of `@include`'s (which will be expanded upon later) in your rule. They should always be put at the **end** of the rule definition. This is due to a bug in some browser inspectors and how they map the rule back to scss file that made it. If the include is first, it will think that that scss file made the rule. confusing stuff...
+#### Includes
+The next rule is about the placement of `@include`'s (which will be expanded upon later) in your rule. They should always be put at the **end** of the rule definition. This is due to a bug in some browser inspectors and how they map the rule back to scss files that made it. If the include is first, it will think that, that scss file made the rule. confusing stuff...
 
 **do**
 ~~~~
@@ -231,7 +249,7 @@ span{
 ~~~~
 
 ### Variables
-are properties saved into a keyword. below we will set the value #dd0000 to $red
+are properties saved into a keyword (variable).
 
 **set (string):**
 ~~~~
@@ -256,21 +274,23 @@ $compatlist: -webkit- -moz- -ms- -o- '';
     #{$compat}transform: translate(-50%, -50%);
 }
 ~~~~
+* note: **#{}** is an interpolation syntax in sass. It allows the compiler to treat the variable as a substitution instead of something to evaluate. This is only needed if you want the plain css value from the variable.
 
 ### Functions
-are function
+are functions
 
 **set:**
 ~~~~
+$baseFontSize: 16; // from variables
 @function pxToEm($px){
-    @return $px / 16 * 1em;
+    @return $px / $baseFontSize * 1em;
 }
 ~~~~
 
 **get:**
 ~~~~
 body{
-    font-size: pxToEm(32); // returns 2em
+    font-size: pxToEm(32); // returns 2em (where 32 / 16 = 2 * 1em = 2em)
 }
 ~~~~
 
@@ -295,8 +315,10 @@ div {
 
 ### Media queries
 There are 2 ways to set them (you can use variables in their definitions as well!).
+
 **outside rule:**
 ~~~~
+$break-mobile: 425px; // from variables
 @media screen and (max-width: $break-mobile) {
     body{
         p{
@@ -325,25 +347,29 @@ body{
 ~~~~
 
 ## Development
-### Small scale, a single developer projects
+### Small scale, single developer projects
 Where collaboration / parallel development are not a concern, use the **file** watch method.
-This is the speediest way to get started and keeps all of your concerns in a single location.
+* This is the speediest way to get started and keeps all of your concerns in a single location.
 
-### Medium scale, multi-developer projects
-Where collaboration / parallel development become a concern, but page count is still managable, use the **folder** or **compiled** watch method.
-In a case like this, seperating each developer's concerns is paramount.
-The number of files **folder** watch creates is not ideal, but may be necessary for workflow / file management
+### Medium scale, single to multi-developer projects
+Where collaboration / parallel development may become a concern, but page count is still managable, use the **folder** or **compiled** watch method.
+* The number of files **folder** watch creates is not ideal, but may be necessary for workflow / file management across many pages and developers.
 
 ### Large scale, multi-developer projects
 Where collaboration / parallel development is a major concern and page count is not managable, use the **compiled** watch method.
+* In a case like this, seperating each developer's concerns is paramount.
 Though longer to set-up, this allows for the most flexibility with parallel development and organized file management.
 This also nicely seperates concerns and creates and environment for portable / reusable code snippets.
 
 ## Workflow
-Attached are some handy bash files to help streamline the watch process.
+Attached in this lesson are some handy `bash` files to help streamline the watch process.
+
 **compile_folder.sh**
+
 **compile_file.sh**
+
 **compile_comp.sh**
+
 **compile_all.sh**
 
 Drag any of these into your terminal window and hit `enter` and the watch process will be started automatically.
@@ -355,11 +381,11 @@ echo "$DIR"
 cd $DIR
 sass --watch scss_watch_file/style.scss:css_watch_file/site.css --style nested
 ~~~~
-First line designated a bash file.
-Next line figures out where on your computer this bash file lives.
-Next line prints that location to your terminal window.
-Next line navigates to that directory.
-Next line starts a sass watch relative to the directory your cd'd to.
+* First line designated a bash file.
+* Next line figures out where on your computer this bash file lives.
+* Next line prints that location to your terminal window.
+* Next line navigates to that directory.
+* Next line starts a sass watch relative to the directory your cd'd to.
 
 ### Large scale projects and compile watch method
 Here are my techniques for producing managable sass frameworks for large scale / multi-developer projects with scattered deployment schedules.
@@ -371,22 +397,36 @@ Here are my techniques for producing managable sass frameworks for large scale /
     * reset.scss
     * grid.scss
 2. Make a **site specific** directory
-    * _compiled.scss - `@import`'s shared resources, site specific files, and is the file to watch
-3. Make a generic scss file to hold common things
-    * general.scss
-4. For each new page / significant section of the site a new scss file
+    * general.scss - hold common things
+3. For each new page / significant section of the site make a new scss file
     * header.scss
     * footer.scss
     * home.scss
     * contact-us.scss
     * ...
+4. Make a **compile** file
+    * _compiled.scss - `@import`'s shared resources, site specific files, and is the file to watch
+        ~~~~
+        @import "variables.scss";
+        @import "functions.scss";
+        @import "mixins.scss";
+        @import "reset.scss";
+        @import "grid.scss";
+        @import "general.scss";
+        @import "header.scss";
+        @import "footer.scss";
+        @import "home.scss";
+        @import "home.scss";
+        @import "contact-us.scss";
+        ...
+        ~~~~
 5. Make a **compile.sh** bash file at the root of your project and populate it with the relative paths (from itself) of the _compile.scss file to watch
-    * use the **expanded** or **nested** compression types to facilitate partial deployments (non minification is made up for in ease of deployment and single file request)
+    * use the **expanded** or **nested** compression types to facilitate partial deployments (non-minification is made up for in ease of deployment and single file request from the server)
 6. Start the **compile.sh** bash file in terminal
 7. Populate your scss files.
     * If done correctly, you will see in your inspector, your rules as well as a link to the scss file that contains it.
 8. In source control, **ignore** `.sass-cache`
-    * this is rebuilt for each person and doesnt need to be version controlled; where, it would eat space and cause conflicts.
+    * this cache is rebuilt for each person and doesnt need to be version controlled.
 9. Commit
 10. Update
     * You may get a conflict of the compiled css file. Just accept the incoming changes and rerun your watch file. Since the compiled file is just the output of various input, it will get remade with the other person's changes and your own.
@@ -423,6 +463,6 @@ Brackets plugins:
 
 >**Beautify** by Drew Hamlett
 
-
+_____
 
 ###### made with ♥ by [clevermethod](http://www.clevermethod.com/)
