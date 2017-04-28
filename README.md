@@ -68,11 +68,258 @@ will attempt to put the entire style sheet onto a single line (most minified)
 In terminal navigate to the parent folder of the folder you want to start watching
 >`$ cd /path_from_computer_root/to_style_folder_parent/`
 
-File watch:
->`$ sass --watch style/scss:style/css`
+Folder watch: (sample html **watch_folder.html**)
+>`$ sass --watch scss_watch_folder:css_watch_folder`
 
-Folder watch:
->`$ sass --watch style/scss:style/css`
+* will create a folder full of css files with a 1:1 naming convention here: `/css_watch_folder`
+
+File watch: (sample html **watch_file.html**)
+>`$ sass --watch scss_watch_file/style.scss:css_watch_file/site.css`
+
+* will create a single file from a single file source named: `site.css` here: `/css_watch_file`
+
+Compile watch: (sample html **watch_comp.html**)
+>`$ sass --watch scss_watch_comp/_compiled.scss:css_watch_comp/site.css`
+
+* will create a single file from multi-file sources named: `site.css` here: `/css_watch_comp`
+
+## How-to's
+
+### Rules
+are the same as css with the key difference of nesting
+
+**scss (single):**
+~~~~
+p{
+    font-size: 1em;
+    &.active{
+        color: $red;
+    }
+    a{
+        font-size: 0.5em;
+        &:hover{
+            color: green;
+        }
+    }
+    .link{
+        color: brown;
+    }
+}
+~~~~
+**css (single):**
+~~~~
+p{
+    font-size: 1em;
+}
+p.active{
+    color: #dd0000;
+}
+p a{
+    font-size: 0.5em;
+}
+p a:hover{
+    color: green;
+}
+p .link{
+    color: brown;
+}
+~~~~
+
+**scss (multi):**
+~~~~
+p,
+span{
+    font-size: 1em;
+    &.active{
+        color: $red;
+    }
+    a{
+        font-size: 0.5em;
+        &:hover{
+            color: green;
+        }
+    }
+    .link{
+        color: brown;
+    }
+}
+~~~~
+**css (multi):**
+~~~~
+p{
+    font-size: 1em;
+}
+p.active{
+    color: #dd0000;
+}
+p a{
+    font-size: 0.5em;
+}
+p a:hover{
+    color: green;
+}
+p .link{
+    color: brown;
+}
+span{
+    font-size: 1em;
+}
+span.active{
+    color: #dd0000;
+}
+span a{
+    font-size: 0.5em;
+}
+span a:hover{
+    color: green;
+}
+span .link{
+    color: brown;
+}
+~~~~
+
+#### Rules about Rules
+The main pitfall with starting out with sass is creating nesting hell; where, seemingly logical nesting in your scss file creates unmanageably long and non-overridable rules.
+But, there is an easy solution and 2 general rules-of-thumb to follow (granted there are some cases the break this mold).
+Do not add more selectors (id, class, tag) in your rules than necessary &
+The more repeated an html element on the page, the lower down a nest it will go.
+
+**do:**
+~~~~
+body{ // only <html> is higher than <body>
+}
+section{ // may be more than one, but is high level enough
+    span{
+    }
+}
+#Header{ // should only be one of these per page
+    span{
+    }
+}
+~~~~
+
+**do not:**
+~~~~
+body{
+    section{
+        span{
+        }
+        #Header{
+            span{
+            }
+        }
+    }
+}
+~~~~
+
+### Variables
+are properties saved into a keyword. below we will set the value #dd0000 to $red
+
+**set (string):**
+~~~~
+$red: #dd0000;
+~~~~
+
+**get:**
+~~~~
+body{
+    background: $red;
+}
+~~~~
+
+**set (array):**
+~~~~
+$compatlist: -webkit- -moz- -ms- -o- '';
+~~~~
+
+**get:**
+~~~~
+@each $compat in $compatlist {
+    #{$compat}transform: translate(-50%, -50%);
+}
+~~~~
+
+### Functions
+are function
+
+**set:**
+~~~~
+@function pxToEm($px){
+    @return $px / 16 * 1em;
+}
+~~~~
+
+**get:**
+~~~~
+body{
+    font-size: pxToEm(32); // returns 2em
+}
+~~~~
+
+### Mix-ins
+are predefined snippets of code with replaceable tokens
+
+**set:**
+~~~~
+@mixin css3($prop, $val) {
+    @each $compat in $compatlist {
+        #{$compat}#{$prop}: #{$val};
+    }
+}
+~~~~
+
+**get:**
+~~~~
+div {
+    @include css3(tranform, translate(-50%, -50%));
+}
+~~~~
+
+### Media queries
+There are 2 ways to set them (you can use variables in their definitions as well!).
+**outside rule:**
+~~~~
+@media screen and (max-width: $break-mobile) {
+    body{
+        p{
+            font-size: 0.75em;
+        }
+        span{
+            font-size: 0.5em;
+        }
+    }
+}
+~~~~
+
+**inside rule:**
+~~~~
+body{
+    p{
+        font-size: 1em;
+        @media screen and (max-width: $break-mobile) {
+            font-size: 0.75em;
+        }
+    }
+    span{
+        font-size: 0.5em;
+    }
+}
+~~~~
+
+## Development
+### Small scale, a single developer projects
+Where collaboration / parallel development are not a concern, use the **file** watch method.
+This is the speediest way to get started and keeps all of your concerns in a single location.
+
+### Medium scale, multi-developer projects
+Where collaboration / parallel development become a concern, but page count is still managable, use the **folder** or **compiled** watch method.
+In a case like this, seperating each developer's concerns is paramount.
+The number of files **folder** watch creates is not ideal, but may be necessary for workflow / file management
+
+### Large scale, multi-developer projects
+Where collaboration / parallel development is a major concern and page count is not managable, use the **compiled** watch method.
+Though longer to set-up, this allows for the most flexibility with parallel development and organized file management.
+This also nicely seperates concerns and creates and environment for portable / reusable code snippets.
 
 ## Other resources
 
