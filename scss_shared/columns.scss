@@ -1,0 +1,35 @@
+$cols: 100%;
+$limit: 24;
+$buffer: 0.01;
+@mixin makeCols( $device, $imp) {
+    // loop thru the main fractions (whole, half, third, forth, ...)
+    @for $i from 1 through $limit {
+        //@debug ".col-#{$i}#{$device}" ($cols / $i / 1%) * 1%;
+        $coli: ($cols / $i / 1%) * 1%;
+        .col-#{$i}#{$device} {
+            width: $coli - $buffer #{$imp};
+            // loop thru the interstitial fractions (2 thirds, 3 forths, ...)
+            @for $j from 2 through $limit - 1 {
+                $colj: $coli * $j;
+                @if $colj < 100% {
+                    //@debug "&.col-x#{$j}#{$device}" $colj;
+                    &.col-x#{$j}#{$device} {
+                        width: $colj - $buffer #{$imp};
+                    }
+                }
+            }
+        }
+        //@debug " ";
+    }
+}
+
+@include makeCols('','');
+// tablet overrides
+@media screen and (max-width: $break-tablet) {
+    @include makeCols('-tablet', '!important');
+}
+
+// mobile overrides
+@media screen and (max-width: $break-mobile) {
+    @include makeCols('-mobile', '!important');
+}

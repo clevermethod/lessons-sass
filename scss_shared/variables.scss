@@ -1,0 +1,22 @@
+// breakpoints (max-width)
+$break-mobile-small     : 320px;
+$break-mobile-medium    : 375px;
+$break-mobile           : 425px;
+$break-tablet           : 768px;
+$break-laptop           : 1024px;
+$break-desktop          : 1440px;
+$break-4k               : 2560px;
+
+// cross browser ("array syntax")
+$compatlist: -webkit- -moz- -ms- -o- '';
+
+// colors
+$white  : white;
+$black  : black;
+$red    : #d00;
+$green  : #00dd00;
+$blue   : rgb(0, 0, 255);
+
+// fonts
+$mainFont:"proxima-nova", "Proxima Nova", Helvetica, sans-serif;
+$iconFont:"FontAwesome";

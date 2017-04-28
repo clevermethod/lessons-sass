@@ -1,0 +1,60 @@
+@mixin css3($prop, $val) {
+    @each $compat in $compatlist {
+        #{$compat}#{$prop}: #{$val};
+    }
+}
+
+@mixin center($axis : "XY"){
+    @if $axis == "Y" {
+        @include css3(transform, translateY(-50%));
+        top:50%;
+    } @elseif $axis == "X"{
+        @include css3(transform, translateX(-50%));
+        left: 50%;
+    } @else{
+        @include css3(transform, translate(-50%,-50%));
+        top: 50%;
+        left: 50%;
+    }
+    position: absolute;
+}
+
+@mixin transition($time, $prop : all) {
+    @include css3(transition, #{$prop} #{$time});
+}
+
+@mixin keyframes($name) {
+    @-webkit-keyframes #{$name} {
+        @content;
+    }
+    @-moz-keyframes #{$name} {
+        @content;
+    }
+    @-ms-keyframes #{$name} {
+        @content;
+    }
+    @-o-keyframes #{$name} {
+        @content;
+    }
+    @keyframes #{$name} {
+        @content;
+    }
+}
+
+@mixin animation($args) {
+    @each $compat in $compatlist {
+        #{$compat}animation: #{$args};
+    }
+}
+
+@mixin fontSize($fontSize) {
+    font-size: pxToEm($fontSize);
+}
+
+@mixin lineHeight($lineHeight, $fontSize) {
+    line-height: $lineHeight / $fontSize * 1em;
+}
+
+@mixin letterSpacing($letterSpacing) {
+    letter-spacing: $letterSpacing / 1000 * 1em;
+}
