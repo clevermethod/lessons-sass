@@ -427,14 +427,14 @@ Here are my techniques for producing managable sass frameworks for large scale /
     * If done correctly, you will see in your inspector, your rules as well as a link to the scss file that contains it.
 8. In source control, **ignore** `.sass-cache`
     * this cache is rebuilt for each person and doesnt need to be version controlled.
-9. Commit
-10. Update
-    * You may get a conflict of the compiled css file. Just accept the incoming changes and rerun your watch file. Since the compiled file is just the output of various input, it will get remade with the other person's changes and your own.
+9. Update
+    * You may get a conflict on the compiled css and map files. Just accept the incoming changes and rerun your watch `bash` file. Since the compiled file is just the output of various inputs (that did not have conflicts), it will get remade with the other person's changes and your own.
+10. Commit
 11. Deployment
     * Since the compiled file is not totally minified, it is easy to compare up differences to various environments.
 12. Collaboration / parallel development / stagger release
     * Since each page / section is seperated, development is siloed to those developers working on those sections of the site.
-    * This is further safe-guarded with the following convention (start every scss file - generic ones, with a page identifier):
+    * This is further safe-guarded with the following convention (start every scss file, minus generic ones, with a page identifier):
 ~~~~
     <body class="pageIdentifier">
         <div id="Rule"></div>
