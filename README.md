@@ -212,6 +212,24 @@ body{
 }
 ~~~~
 
+The next rule is about the placement of `@include`'s (which will be expanded upon later) in your rule. They should always be put at the **end** of the rule definition. This is due to a bug in some browser inspectors and how they map the rule back to scss file that made it. If the include is first, it will think that that scss file made the rule. confusing stuff...
+
+**do**
+~~~~
+span{
+    font-size: 1em;
+    @include css3(transform, translate(-50%,-50%)); // last :)
+}
+~~~~
+
+**do not**
+~~~~
+span{
+    @include css3(transform, translate(-50%,-50%)); // first :(
+    font-size: 1em;
+}
+~~~~
+
 ### Variables
 are properties saved into a keyword. below we will set the value #dd0000 to $red
 
@@ -320,6 +338,77 @@ The number of files **folder** watch creates is not ideal, but may be necessary 
 Where collaboration / parallel development is a major concern and page count is not managable, use the **compiled** watch method.
 Though longer to set-up, this allows for the most flexibility with parallel development and organized file management.
 This also nicely seperates concerns and creates and environment for portable / reusable code snippets.
+
+## Workflow
+Attached are some handy bash files to help streamline the watch process.
+**compile_folder.sh**
+**compile_file.sh**
+**compile_comp.sh**
+**compile_all.sh**
+
+Drag any of these into your terminal window and hit `enter` and the watch process will be started automatically.
+This is possible because of the contents of the file and where it is placed in the directory.
+~~~~
+#!/bin/bash
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+echo "$DIR"
+cd $DIR
+sass --watch scss_watch_file/style.scss:css_watch_file/site.css --style nested
+~~~~
+First line designated a bash file.
+Next line figures out where on your computer this bash file lives.
+Next line prints that location to your terminal window.
+Next line navigates to that directory.
+Next line starts a sass watch relative to the directory your cd'd to.
+
+### Large scale projects and compile watch method
+Here are my techniques for producing managable sass frameworks for large scale / multi-developer projects with scattered deployment schedules.
+
+1. Make a **shared resources** directory
+    * variables.scss
+    * functions.scss
+    * mixins.scss
+    * reset.scss
+    * grid.scss
+2. Make a **site specific** directory
+    * _compiled.scss - `@import`'s shared resources, site specific files, and is the file to watch
+3. Make a generic scss file to hold common things
+    * general.scss
+4. For each new page / significant section of the site a new scss file
+    * header.scss
+    * footer.scss
+    * home.scss
+    * contact-us.scss
+    * ...
+5. Make a **compile.sh** bash file at the root of your project and populate it with the relative paths (from itself) of the _compile.scss file to watch
+    * use the **expanded** or **nested** compression types to facilitate partial deployments (non minification is made up for in ease of deployment and single file request)
+6. Start the **compile.sh** bash file in terminal
+7. Populate your scss files.
+    * If done correctly, you will see in your inspector, your rules as well as a link to the scss file that contains it.
+8. In source control, **ignore** `.sass-cache`
+    * this is rebuilt for each person and doesnt need to be version controlled; where, it would eat space and cause conflicts.
+9. Commit
+10. Update
+    * You may get a conflict of the compiled css file. Just accept the incoming changes and rerun your watch file. Since the compiled file is just the output of various input, it will get remade with the other person's changes and your own.
+11. Deployment
+    * Since the compiled file is not totally minified, it is easy to compare up differences to various environments.
+12. Collaboration / parallel development / stagger release
+    * Since each page / section is seperated, development is siloed to those developers working on those sections of the site.
+    * This is further safe-guarded with the following convention (start every scss file - generic ones, with a page identifier):
+~~~~
+    <body class="pageIdentifier">
+        <div id="Rule"></div>
+    </body>
+~~~~
+~~~~
+    // start of scss file
+    .pageIdentifier{
+        #Rule{
+        }
+    }
+~~~~
+13. Sit back, relax, profit
+    * cause you just streamlined your process!
 
 ## Other resources
 
