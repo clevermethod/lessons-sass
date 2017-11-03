@@ -22,6 +22,8 @@ check it is installed correctly
 
 * will return the sass version if installed correctly
 
+For WINDOWS, reference the sass install documentation: http://sass-lang.com/install
+
 ## Converting / Watching
 
 #### CSS to SCSS:
