@@ -23,6 +23,8 @@ check it is installed correctly
 * will return the sass version if installed correctly
 
 For WINDOWS, reference the sass install documentation: http://sass-lang.com/install
+(if you downloaded the Ruby 2.5.0-1 installer, you may run into an issue running the recommended: 'gem install ffi -v 1.9.18'. To fix this append '--force')
+>`gem install ffi -v 1.9.18 --force
 
 ## Converting / Watching
 
